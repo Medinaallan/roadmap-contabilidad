@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roadmap — Módulo Contable | Taller Mecánico</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --border: #1e2330;
+    --accent: #e8a020;
+    --accent2: #3b82f6;
+    --accent3: #10b981;
+    --accent4: #f43f5e;
+    --text: #e8eaf0;
+    --muted: #5a6380;
+    --label: #8891aa;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding: 0 0 80px;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    padding: 60px 48px 48px;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -80px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(232,160,32,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(232,160,32,0.35);
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 7vw, 88px);
+    line-height: 0.95;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 16px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero p {
+    font-size: 15px;
+    color: var(--label);
+    max-width: 560px;
+    line-height: 1.65;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 32px;
+    flex-wrap: wrap;
+  }
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .meta-item span:first-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .meta-item span:last-child {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* LEGEND */
+  .legend {
+    display: flex;
+    gap: 20px;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .legend-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-right: 8px;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .badge::before { content: ''; width: 7px; height: 7px; border-radius: 50%; display: inline-block; }
+  .badge.exist { background: rgba(16,185,129,0.12); color: #10b981; }
+  .badge.exist::before { background: #10b981; }
+  .badge.dev { background: rgba(232,160,32,0.12); color: var(--accent); }
+  .badge.dev::before { background: var(--accent); }
+  .badge.future { background: rgba(59,130,246,0.12); color: var(--accent2); }
+  .badge.future::before { background: var(--accent2); }
+  .badge.integration { background: rgba(244,63,94,0.12); color: var(--accent4); }
+  .badge.integration::before { background: var(--accent4); }
+
+  /* MAIN GRID */
+  .main { padding: 48px; }
+
+  /* PHASE SECTION */
+  .phase {
+    margin-bottom: 64px;
+    position: relative;
+  }
+  .phase-header {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-bottom: 28px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    line-height: 1;
+    color: var(--border);
+    letter-spacing: -2px;
+    min-width: 80px;
+  }
+  .phase-info { flex: 1; }
+  .phase-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .phase-subtitle { font-size: 13px; color: var(--muted); }
+  .phase-status { display: flex; gap: 8px; align-items: center; }
+
+  /* MODULE CARDS */
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .module-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    position: relative;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .module-card:hover {
+    border-color: rgba(232,160,32,0.3);
+    transform: translateY(-2px);
+  }
+  .module-card.wide { grid-column: span 2; }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .card-icon {
+    width: 38px; height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    background: var(--surface2);
+  }
+  .card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+  .card-desc {
+    font-size: 13px;
+    color: var(--label);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .card-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+  .card-features li {
+    font-size: 12.5px;
+    color: var(--label);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.45;
+  }
+  .card-features li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .card-features li.highlight { color: var(--text); }
+  .card-features li.highlight::before { color: var(--accent); }
+
+  .card-footer {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* ACCOUNTING ENTRY BLOCK */
+  .entry-block {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+  }
+  .entry-block .entry-title {
+    color: var(--accent);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .entry-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 3px 0;
+    color: var(--label);
+  }
+  .entry-row .debe { color: var(--accent3); }
+  .entry-row .haber { color: var(--accent4); }
+  .entry-row .account { flex: 1; }
+  .entry-row .indent { padding-left: 16px; }
+
+  /* STATES TABLE */
+  .states-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .state-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 18px;
+  }
+  .state-card .state-name {
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 8px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .state-card .state-items {
+    font-size: 12px;
+    color: var(--label);
+    line-height: 1.8;
+  }
+
+  /* TIMELINE CONNECTOR */
+  .timeline-line {
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+    height: 40px;
+    margin: 8px 0 8px 38px;
+    opacity: 0.4;
+  }
+
+  /* KPI STRIP */
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .kpi-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px;
+  }
+  .kpi-card .kpi-label {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.5px;
+  }
+  .kpi-card .kpi-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .kpi-card .kpi-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* CATÁLOGO DE CUENTAS */
+  .accounts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .account-group {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 14px;
+  }
+  .account-group .ag-title {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
+  .account-group .ag-items {
+    font-size: 12px;
+    color: var(--label);
+    line-height: 1.9;
+  }
+  .account-group .ag-items .sub {
+    padding-left: 14px;
+    color: var(--muted);
+    font-size: 11.5px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero, .main, .legend { padding: 32px 20px; }
+    .module-card.wide { grid-column: span 1; }
+    .accounts-grid { grid-template-columns: 1fr; }
+    .phase-num { font-size: 48px; min-width: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Roadmap Técnico · v1.0</div>
+  <h1>MÓDULO<br><span>CONTABLE</span></h1>
+  <p>Plan de desarrollo del módulo de contabilidad integrado a la plataforma de gestión de taller mecánico — legislación hondureña (SAR).</p>
+  <div class="hero-meta">
+    <div class="meta-item">
+      <span>Legislación</span>
+      <span>Honduras — SAR</span>
+    </div>
+    <div class="meta-item">
+      <span>Impuestos</span>
+      <span>ISV 15% · ISR 15%</span>
+    </div>
+    <div class="meta-item">
+      <span>Fases</span>
+      <span>4 etapas</span>
+    </div>
+    <div class="meta-item">
+      <span>Módulos</span>
+      <span>6 módulos principales</span>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<div class="legend">
+  <span class="legend-label">Estado:</span>
+  <span class="badge exist">Ya existe</span>
+  <span class="badge dev">En desarrollo</span>
+  <span class="badge future">Futuro</span>
+  <span class="badge integration">Integración externa</span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- ===================== FASE 1 ===================== -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">01</div>
+      <div class="phase-info">
+        <div class="phase-title">CUENTAS BASE & ASIENTOS AUTOMÁTICOS</div>
+        <div class="phase-subtitle">Catálogo de cuentas, motor de asientos contables y flujos ya operativos</div>
+      </div>
+      <div class="phase-status">
+        <span class="badge exist">Base existente</span>
+        <span class="badge dev">Completar</span>
+      </div>
+    </div>
+
+    <div class="modules-grid">
+
+      <!-- CATÁLOGO -->
+      <div class="module-card wide">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge dev">En desarrollo</span>
+        </div>
+        <div class="card-title">Catálogo de Cuentas Contables</div>
+        <div class="card-desc">Plan de cuentas estándar para Honduras adaptado al taller mecánico. Base de todo el módulo.</div>
+        <div class="accounts-grid">
+          <div class="account-group">
+            <div class="ag-title">1 · Activos</div>
+            <div class="ag-items">
+              1100 · Activos Corrientes<br>
+              <span class="sub">1101 · Caja</span><br>
+              <span class="sub">1102 · Bancos</span><br>
+              <span class="sub">1103 · Cuentas por Cobrar</span><br>
+              <span class="sub">1104 · Inventario de Repuestos</span><br>
+              1200 · Activos No Corrientes<br>
+              <span class="sub">1201 · Equipos y Maquinaria</span><br>
+              <span class="sub">1202 · Depreciación Acumulada</span>
+            </div>
+          </div>
+          <div class="account-group">
+            <div class="ag-title">2 · Pasivos</div>
+            <div class="ag-items">
+              2100 · Pasivos Corrientes<br>
+              <span class="sub">2101 · Cuentas por Pagar</span><br>
+              <span class="sub">2102 · ISV por Pagar (15%)</span><br>
+              <span class="sub">2103 · IHSS por Pagar</span><br>
+              <span class="sub">2104 · RAP por Pagar</span><br>
+              2200 · Pasivos No Corrientes<br>
+              <span class="sub">2201 · Préstamos Largo Plazo</span>
+            </div>
+          </div>
+          <div class="account-group">
+            <div class="ag-title">3 · Patrimonio</div>
+            <div class="ag-items">
+              3100 · Capital Social<br>
+              3200 · Utilidades Retenidas<br>
+              3300 · Utilidad del Ejercicio<br>
+              3400 · Reserva Legal
+            </div>
+          </div>
+          <div class="account-group">
+            <div class="ag-title">4 / 5 · Ingresos & Gastos</div>
+            <div class="ag-items">
+              4100 · Ingresos por Servicios<br>
+              4200 · Ingresos por Repuestos<br>
+              5100 · Gastos Operativos<br>
+              5200 · Gastos de Personal<br>
+              5300 · Gastos Financieros<br>
+              5400 · Devoluciones / NC
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span>Estructura jerárquica: Grupo → Cuenta → Subcuenta</span>
+          <span>SAR Honduras</span>
+        </div>
+      </div>
+
+      <!-- VENTAS -->
+      <div class="module-card">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge exist">Ya existe</span>
+        </div>
+        <div class="card-title">Módulo de Ventas → Asiento Contable</div>
+        <div class="card-desc">Las ventas ya se registran. Se debe generar el asiento automático según la forma de pago.</div>
+        <ul class="card-features">
+          <li class="highlight">Efectivo → Caja (1101)</li>
+          <li class="highlight">Transferencia → Bancos (1102)</li>
+          <li class="highlight">POS → Bancos (1102)</li>
+          <li class="highlight">Link pago digital → Bancos (1102)</li>
+          <li>ISV 15% separado en cuenta 2102</li>
+          <li>Descuentos otorgados como contrapartida de ingresos</li>
+        </ul>
+        <div class="entry-block">
+          <div class="entry-title">Asiento tipo — Venta en Efectivo</div>
+          <div class="entry-row"><span class="account">1101 Caja</span><span class="debe">DEBE</span></div>
+          <div class="entry-row indent"><span class="account">4100 Ingresos por Servicios</span><span class="haber">HABER</span></div>
+          <div class="entry-row indent"><span class="account">2102 ISV por Pagar 15%</span><span class="haber">HABER</span></div>
+        </div>
+        <div class="card-footer"><span>Reportes existentes de ventas</span><span>Automatizar</span></div>
+      </div>
+
+      <!-- DEVOLUCIONES -->
+      <div class="module-card">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge dev">Completar</span>
+        </div>
+        <div class="card-title">Devoluciones & Notas de Crédito</div>
+        <div class="card-desc">Las notas de crédito ya existen. Ampliar para que puedan deducirse en efectivo o banco.</div>
+        <ul class="card-features">
+          <li class="highlight">NC por default → deduce de Caja</li>
+          <li class="highlight">NC por transferencia → deduce de Bancos</li>
+          <li>Asiento automático inverso a la venta</li>
+          <li>ISV también se reversa proporcionalmente</li>
+          <li>Trazabilidad NC ↔ Factura original</li>
+        </ul>
+        <div class="entry-block">
+          <div class="entry-title">Asiento tipo — Nota de Crédito Efectivo</div>
+          <div class="entry-row"><span class="account">5400 Devoluciones</span><span class="debe">DEBE</span></div>
+          <div class="entry-row"><span class="account">2102 ISV por Pagar (reversa)</span><span class="debe">DEBE</span></div>
+          <div class="entry-row indent"><span class="account">1101 Caja</span><span class="haber">HABER</span></div>
+        </div>
+        <div class="card-footer"><span>NC existentes en plataforma</span><span>Extender flujo</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="timeline-line"></div>
+
+  <!-- ===================== FASE 2 ===================== -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">02</div>
+      <div class="phase-info">
+        <div class="phase-title">MÓDULO DE GASTOS & NÓMINA</div>
+        <div class="phase-subtitle">Registro y control de egresos operativos e integración de planillas</div>
+      </div>
+      <div class="phase-status">
+        <span class="badge dev">Nuevo módulo</span>
+        <span class="badge integration">Integración</span>
+      </div>
+    </div>
+
+    <div class="modules-grid">
+
+      <!-- GASTOS -->
+      <div class="module-card">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge dev">Nuevo</span>
+        </div>
+        <div class="card-title">Módulo de Gastos</div>
+        <div class="card-desc">Registro de gastos operativos del taller con soporte de factura, fuente de pago y categoría.</div>
+        <ul class="card-features">
+          <li class="highlight">Gastos pagados desde Caja (efectivo disponible)</li>
+          <li class="highlight">Gastos pagados desde Banco (transferencia)</li>
+          <li>Fondos en custodia del jefe → cuenta transitoria</li>
+          <li>Adjuntar factura SAR al gasto</li>
+          <li>Categorías: combustible, repuestos, servicios, etc.</li>
+          <li>Estado: pendiente de factura / facturado / conciliado</li>
+          <li>Movimiento de caja permite gastos deducibles y no deducibles (ISR)</li><li>Inyección de efectivo mediante movimientos de caja (ejemplo: ingreso manual de L 3,000 por parte de gerencia/jefatura)</li>
+        </ul>
+        <div class="entry-block">
+          <div class="entry-title">Asiento tipo — Gasto con Banco</div>
+          <div class="entry-row"><span class="account">5100 Gastos Operativos</span><span class="debe">DEBE</span></div>
+          <div class="entry-row indent"><span class="account">1102 Bancos</span><span class="haber">HABER</span></div>
+        </div>
+        <div class="entry-block">
+          <div class="entry-title">Fondo en Custodia (anticipos del jefe)</div>
+          <div class="entry-row"><span class="account">1105 Fondo por Rendir</span><span class="debe">DEBE</span></div>
+          <div class="entry-row indent"><span class="account">1101 Caja / 1102 Bancos</span><span class="haber">HABER</span></div>
+        </div>
+        <div class="card-footer"><span>Requiere: captura de facturas</span><span>Nuevo módulo</span></div>
+      </div>
+
+      <!-- NÓMINA -->
+      <div class="module-card">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge integration">Integración externa</span>
+        </div>
+        <div class="card-title">Integración de Nómina / Planillas</div>
+        <div class="card-desc">El sistema de planillas ya existe externamente. El taller consume esos datos vía API para generar asientos.</div>
+        <ul class="card-features">
+          <li class="highlight">Consumir API de plataforma general de planillas</li>
+          <li class="highlight">Importar empleados y montos de nómina por período</li>
+          <li>Deducciones: IHSS empleado, RAP empleado</li>
+          <li>Aportaciones patronales: IHSS patronal, RAP patronal</li>
+          <li>ISR sobre salarios (tablas SAR Honduras)</li>
+          <li>Generar asiento de nómina automáticamente</li>
+          <li>Generar asiento de pago de planilla (Banco o Caja)</li>
+        </ul>
+        <div class="entry-block">
+          <div class="entry-title">Asiento tipo — Provisión de Nómina</div>
+          <div class="entry-row"><span class="account">5200 Gasto Sueldos</span><span class="debe">DEBE</span></div>
+          <div class="entry-row indent"><span class="account">2103 IHSS por Pagar</span><span class="haber">HABER</span></div>
+          <div class="entry-row indent"><span class="account">2104 RAP por Pagar</span><span class="haber">HABER</span></div>
+          <div class="entry-row indent"><span class="account">2105 Sueldos por Pagar</span><span class="haber">HABER</span></div>
+        </div>
+        <div class="card-footer"><span>Fuente: plataforma externa planillas</span><span>Solo lectura</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="timeline-line"></div>
+
+  <!-- ===================== FASE 3 ===================== -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">03</div>
+      <div class="phase-info">
+        <div class="phase-title">ESTADOS FINANCIEROS</div>
+        <div class="phase-subtitle">Generación automática de reportes financieros bajo legislación hondureña</div>
+      </div>
+      <div class="phase-status">
+        <span class="badge future">Siguiente etapa</span>
+      </div>
+    </div>
+
+    <div class="modules-grid">
+
+      <!-- ESTADOS FINANCIEROS -->
+      <div class="module-card wide">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge future">Futuro</span>
+        </div>
+        <div class="card-title">Motor de Estados Financieros</div>
+        <div class="card-desc">Generación automática de los 4 estados financieros principales con filtro por período (mes / trimestre / año) y exportación PDF / Excel.</div>
+
+        <div class="states-grid">
+          <div class="state-card">
+            <div class="state-name"> Balance General</div>
+            <div class="state-items">
+              Activos Corrientes (Caja, Bancos, CxC, Inv.)<br>
+              Activos No Corrientes (Equipos, Dep.)<br>
+              Pasivos Corrientes (ISV, CxP, Nómina)<br>
+              Pasivos No Corrientes (Préstamos)<br>
+              Patrimonio (Capital + Utilidades)
+            </div>
+          </div>
+          <div class="state-card">
+            <div class="state-name">Estado de Resultados</div>
+            <div class="state-items">
+              (+) Ingresos por Servicios<br>
+              (+) Ingresos por Repuestos<br>
+              (−) Devoluciones y Descuentos<br>
+              (−) Gastos Operativos<br>
+              (−) Gastos de Personal / Nómina<br>
+              (=) Utilidad / Pérdida Neta
+            </div>
+          </div>
+          <div class="state-card">
+            <div class="state-name">Flujo de Efectivo</div>
+            <div class="state-items">
+              Actividades Operativas<br>
+              Actividades de Inversión<br>
+              Actividades de Financiamiento<br>
+              Variación neta de efectivo<br>
+              Saldo inicial vs saldo final
+            </div>
+          </div>
+          <div class="state-card">
+            <div class="state-name">Estado de Cambios en Patrimonio</div>
+            <div class="state-items">
+              Capital inicial<br>
+              Utilidad del período<br>
+              Distribuciones / Retiros<br>
+              Reserva legal (5% — Art. SAR)<br>
+              Capital final
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span>Filtros: mensual · trimestral · anual</span>
+          <span>Exportar PDF · Excel</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="timeline-line"></div>
+
+  <!-- ===================== FASE 4 ===================== -->
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-num">04</div>
+      <div class="phase-info">
+        <div class="phase-title">DASHBOARD & MÉTRICAS DE RENTABILIDAD</div>
+        <div class="phase-subtitle">Indicadores de gestión, cierres periódicos y análisis financiero del taller</div>
+      </div>
+      <div class="phase-status">
+        <span class="badge future">Fase final</span>
+      </div>
+    </div>
+
+    <div class="modules-grid">
+
+      <div class="module-card">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge future">Futuro</span>
+        </div>
+        <div class="card-title">KPIs & Medidores de Rentabilidad</div>
+        <div class="card-desc">Indicadores financieros calculados automáticamente desde el libro mayor.</div>
+        <div class="kpi-strip">
+          <div class="kpi-card">
+            <div class="kpi-label">Margen Bruto</div>
+            <div class="kpi-val">—%</div>
+            <div class="kpi-sub">Ingresos − Costos directos</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Margen Neto</div>
+            <div class="kpi-val">—%</div>
+            <div class="kpi-sub">Utilidad / Ingresos totales</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Liquidez Corriente</div>
+            <div class="kpi-val">—x</div>
+            <div class="kpi-sub">Activo Cte / Pasivo Cte</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">ROA</div>
+            <div class="kpi-val">—%</div>
+            <div class="kpi-sub">Utilidad / Total Activos</div>
+          </div>
+        </div>
+        <div class="card-footer"><span>Actualización: cierre mensual</span><span>Automático</span></div>
+      </div>
+
+      <div class="module-card">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge future">Futuro</span>
+        </div>
+        <div class="card-title">Cierres Contables</div>
+        <div class="card-desc">Proceso de cierre mensual y anual que congela períodos y genera resumen ejecutivo.</div>
+        <ul class="card-features">
+          <li class="highlight">Cierre mensual: bloquea asientos del período</li>
+          <li class="highlight">Cierre anual: transfiere utilidades a patrimonio</li>
+          <li>Conciliación bancaria (movimientos vs extracto)</li>
+          <li>Cuadre de caja chica</li>
+          <li>Historial de cierres con firma del responsable</li>
+          <li>Alertas de partidas abiertas antes de cerrar</li>
+        </ul>
+        <div class="card-footer"><span>Requiere: todos los módulos anteriores</span><span>Fase 4</span></div>
+      </div>
+
+      <div class="module-card">
+        <div class="card-top">
+          <div class="card-icon"></div>
+          <span class="badge future">Futuro</span>
+        </div>
+        <div class="card-title">Libro Diario & Mayor</div>
+        <div class="card-desc">Consulta y exportación del libro diario de asientos y el mayor por cuenta.</div>
+        <ul class="card-features">
+          <li class="highlight">Libro diario cronológico con todos los asientos</li>
+          <li class="highlight">Mayor general: saldo por cuenta en cualquier período</li>
+          <li>Filtros por fecha, cuenta, módulo origen</li>
+          <li>Exportación para contador externo (SAR)</li>
+          <li>Drill-down: asiento → transacción original</li>
+        </ul>
+        <div class="card-footer"><span>Reporte auditivo completo</span><span>SAR compliant</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- RESUMEN GENERAL -->
+  <div style="margin-top: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 28px;">
+    <div style="font-family:'Bebas Neue',sans-serif; font-size: 22px; letter-spacing: 1px; margin-bottom: 20px; color: var(--text);">
+      RESUMEN DE FASES
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;">
+      <div style="background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 4px; padding: 16px;">
+        <div style="font-size: 11px; color: #10b981; font-family: 'DM Mono', monospace; letter-spacing: 1px; margin-bottom: 8px;">FASE 1 · BASE</div>
+        <div style="font-size: 13px; color: var(--label); line-height: 1.7">
+          ✓ Catálogo de cuentas<br>
+          ✓ Asientos de ventas automáticos<br>
+          ✓ Notas de crédito (efectivo + banco)
+        </div>
+      </div>
+      <div style="background: rgba(232,160,32,0.08); border: 1px solid rgba(232,160,32,0.2); border-radius: 4px; padding: 16px;">
+        <div style="font-size: 11px; color: var(--accent); font-family: 'DM Mono', monospace; letter-spacing: 1px; margin-bottom: 8px;">FASE 2 · EGRESOS</div>
+        <div style="font-size: 13px; color: var(--label); line-height: 1.7">
+          ○ Módulo de gastos con facturas<br>
+          ○ Fondos en custodia / anticipos<br>
+          ○ Integración API nómina
+        </div>
+      </div>
+      <div style="background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 4px; padding: 16px;">
+        <div style="font-size: 11px; color: var(--accent2); font-family: 'DM Mono', monospace; letter-spacing: 1px; margin-bottom: 8px;">FASE 3 · REPORTES</div>
+        <div style="font-size: 13px; color: var(--label); line-height: 1.7">
+          ○ Balance General<br>
+          ○ Estado de Resultados<br>
+          ○ Flujo de Efectivo · Patrimonio
+        </div>
+      </div>
+      <div style="background: rgba(244,63,94,0.08); border: 1px solid rgba(244,63,94,0.2); border-radius: 4px; padding: 16px;">
+        <div style="font-size: 11px; color: var(--accent4); font-family: 'DM Mono', monospace; letter-spacing: 1px; margin-bottom: 8px;">FASE 4 · INTELIGENCIA</div>
+        <div style="font-size: 13px; color: var(--label); line-height: 1.7">
+          ○ KPIs de rentabilidad<br>
+          ○ Cierres contables<br>
+          ○ Libro Mayor / Diario
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</body>
+</html>
